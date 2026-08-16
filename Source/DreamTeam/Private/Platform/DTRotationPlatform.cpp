@@ -1,4 +1,6 @@
 #include "Platform/DTRotationPlatform.h"
+#include "Components/SceneComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 ADTRotationPlatform::ADTRotationPlatform()
 {

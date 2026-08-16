@@ -1,20 +1,57 @@
 #include "Platform/DTTimerPlatform.h"
+#include "Components/SceneComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 
 ADTTimerPlatform::ADTTimerPlatform()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+	SetRootComponent(SceneRoot);
+
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	MeshComp->SetupAttachment(SceneRoot);
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	BoxCollision->SetupAttachment(SceneRoot);
+	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BoxCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+	BoxCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	BoxCollision->SetGenerateOverlapEvents(true);
+
+	DisappearDelay = 1.0f;
+	RespawnDelay = 5.0f;
 }
 
 void ADTTimerPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ADTTimerPlatform::OnTriggerBeginOverlap);
 }
 
-void ADTTimerPlatform::Tick(float DeltaTime)
+void ADTTimerPlatform::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::Tick(DeltaTime);
-
+	GetWorld()->GetTimerManager().SetTimer(DisappearTimerHandle, this, &ADTTimerPlatform::DisappearPlatform, DisappearDelay, false);
 }
+
+void ADTTimerPlatform::SetPlatformActive(bool bActive)
+{
+	SetActorHiddenInGame(!bActive);
+	SetActorEnableCollision(bActive);
+}
+
+void ADTTimerPlatform::DisappearPlatform()
+{
+	SetPlatformActive(false);
+
+	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &ADTTimerPlatform::RespawnPlatform, RespawnDelay, false);
+}
+
+void ADTTimerPlatform::RespawnPlatform()
+{
+	SetPlatformActive(true);
+}
+
 

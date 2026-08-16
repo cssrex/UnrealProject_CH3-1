@@ -12,6 +12,10 @@ class DREAMTEAM_API ADTMovingPlatform : public AActor
 {
 	GENERATED_BODY()
 
+public:
+	void SetMoveSpeed(const FVector& NewSpeed) { MoveSpeed = NewSpeed; }
+	void SetMaxRange(float NewRange) { MaxRange = NewRange; }
+
 public:	
 	ADTMovingPlatform();
 

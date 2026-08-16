@@ -4,11 +4,17 @@
 #include "GameFramework/Actor.h"
 #include "DTRotationPlatform.generated.h"
 
+class USceneComponent;
+class UStaticMeshComponent;
+
 UCLASS()
 class DREAMTEAM_API ADTRotationPlatform : public AActor
 {
 	GENERATED_BODY()
 	
+public:
+	void SetRotationSpeed(const FRotator& NewSpeed) { RotationSpeed = NewSpeed; }
+
 public:	
 	ADTRotationPlatform();
 
