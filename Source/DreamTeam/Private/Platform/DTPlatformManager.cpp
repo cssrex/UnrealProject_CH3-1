@@ -40,7 +40,10 @@ void ADTPlatformManager::SpawnPlatform()
 
 		FVector SpawnLocation(RandomX, RandomY, GetActorLocation().Z);
 
-		GetWorld()->SpawnActor<AActor>(PlatformClasses, SpawnLocation, FRotator::ZeroRotator);
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		GetWorld()->SpawnActor<AActor>(PlatformClasses, SpawnLocation, FRotator::ZeroRotator, SpawnParams);
 	}
 
 }
