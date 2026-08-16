@@ -1,27 +1,41 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Platform/DTMovingPlatform.h"
+#include "Components/SceneComponent.h"
+#include "Components/StaticMeshComponent.h"
 
-// Sets default values
 ADTMovingPlatform::ADTMovingPlatform()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+	SetRootComponent(SceneRoot);
+
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	MeshComp->SetupAttachment(SceneRoot);
+
+	MoveSpeed = FVector(0, 100.0f, 0);
+
+	MaxRange = 1000.f;
 }
 
-// Called when the game starts or when spawned
 void ADTMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	StartLocation = GetActorLocation();
 }
 
-// Called every frame
 void ADTMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (!MoveSpeed.IsNearlyZero())
+	{
+		AddActorWorldOffset(MoveSpeed * DeltaTime);
 
+		if (FVector::Dist(StartLocation, GetActorLocation()) > MaxRange)
+		{
+			MoveSpeed *= -1;
+		}
+	}
 }
 

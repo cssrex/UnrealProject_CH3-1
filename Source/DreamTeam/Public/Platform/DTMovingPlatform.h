@@ -1,26 +1,38 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DTMovingPlatform.generated.h"
 
+class USceneComponent;
+class UStaticMeshComponent;
+
 UCLASS()
 class DREAMTEAM_API ADTMovingPlatform : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
-	// Sets default values for this actor's properties
 	ADTMovingPlatform();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Item|Components")
+	TObjectPtr<USceneComponent> SceneRoot;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item|Components")
+	TObjectPtr<UStaticMeshComponent> MeshComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	FVector MoveSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	float MaxRange;
+
+private:
+	FVector StartLocation;
 
 };

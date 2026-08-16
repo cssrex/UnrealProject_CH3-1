@@ -24,20 +24,7 @@ public class DreamTeam : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		PublicIncludePaths.AddRange(new string[] {
-			"DreamTeam",
-			"DreamTeam/Variant_Platforming",
-			"DreamTeam/Variant_Platforming/Animation",
-			"DreamTeam/Variant_Combat",
-			"DreamTeam/Variant_Combat/AI",
-			"DreamTeam/Variant_Combat/Animation",
-			"DreamTeam/Variant_Combat/Gameplay",
-			"DreamTeam/Variant_Combat/Interfaces",
-			"DreamTeam/Variant_Combat/UI",
-			"DreamTeam/Variant_SideScrolling",
-			"DreamTeam/Variant_SideScrolling/AI",
-			"DreamTeam/Variant_SideScrolling/Gameplay",
-			"DreamTeam/Variant_SideScrolling/Interfaces",
-			"DreamTeam/Variant_SideScrolling/UI"
+			"DreamTeam"
 		});
 
 		// Uncomment if you are using Slate UI
