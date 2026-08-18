@@ -1,4 +1,4 @@
-#include "Platform/DTMovingPlatform.h"
+ï»¿#include "Platform/DTMovingPlatform.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -12,9 +12,9 @@ ADTMovingPlatform::ADTMovingPlatform()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	MeshComp->SetupAttachment(SceneRoot);
 
-	MoveSpeed = FVector(0, 100.0f, 0);
+	MoveSpeed = 100.0f;
 
-	MaxRange = 1000.f;
+	Destination = FVector(0.0f, 1000.0f, 0.0f);
 }
 
 void ADTMovingPlatform::BeginPlay()
@@ -22,22 +22,52 @@ void ADTMovingPlatform::BeginPlay()
 	Super::BeginPlay();
 	
 	StartLocation = GetActorLocation();
+	EndLocation = StartLocation + GetActorTransform().TransformVectorNoScale(Destination);
 }
 
 void ADTMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	// ½ÃÀÛÁ¡À» Áß½ÉÀ¸·Î ¿Õº¹ÇØ¼­ ¿òÁ÷ÀÓ
-	if (!MoveSpeed.IsNearlyZero())
-	{
-		AddActorWorldOffset(MoveSpeed * DeltaTime);
+	//// ì‹œìž‘ì ì„ ì¤‘ì‹¬ìœ¼ë¡œ ì™•ë³µí•´ì„œ ì›€ì§ìž„
+	//if (!MoveSpeed.IsNearlyZero())
+	//{
+	//	AddActorWorldOffset(MoveSpeed * DeltaTime);
 
-		// ½ÃÀÛ ÁöÁ¡À¸·ÎºÎÅÍ MaxRangeº¸´Ù ¸Ö¾îÁö¸é ¼Óµµ µÚÁý±â
-		if (FVector::Dist(StartLocation, GetActorLocation()) > MaxRange)
-		{
-			MoveSpeed *= -1;
-		}
+	//	// ì‹œìž‘ ì§€ì ìœ¼ë¡œë¶€í„° MaxRangeë³´ë‹¤ ë©€ì–´ì§€ë©´ ì†ë„ ë’¤ì§‘ê¸°
+	//	if (FVector::Dist(StartLocation, GetActorLocation()) > MaxRange)
+	//	{
+	//		MoveSpeed *= -1;
+	//	}
+	//}
+
+	if (MoveSpeed <= 0.0f || Destination.IsNearlyZero())
+	{
+		return;
 	}
+
+	const float Distance = FVector::Dist(StartLocation, EndLocation);
+
+	if (Distance <= KINDA_SMALL_NUMBER)
+	{
+		return;
+	}
+
+	Alpha += (MoveSpeed / Distance) * DeltaTime * Direction;
+
+	if (Alpha >= 1.0f)
+	{
+		Alpha = 1.0f;
+		Direction = -1.0f;
+	}
+	else if (Alpha <= 0.0f)
+	{
+		Alpha = 0.0f;
+		Direction = 1.0f;
+	}
+
+	const float SmoothAlpha = (1.0f - FMath::Cos(Alpha * PI)) * 0.5f;
+
+	SetActorLocation(FMath::Lerp(StartLocation, EndLocation, SmoothAlpha));
 }
 

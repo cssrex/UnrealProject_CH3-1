@@ -1,4 +1,4 @@
-#include "Platform/DTTimerPlatform.h"
+ï»¿#include "Platform/DTTimerPlatform.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
@@ -31,9 +31,17 @@ void ADTTimerPlatform::BeginPlay()
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ADTTimerPlatform::OnTriggerBeginOverlap);
 }
 
+void ADTTimerPlatform::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	GetWorldTimerManager().ClearTimer(DisappearTimerHandle);
+	GetWorldTimerManager().ClearTimer(RespawnTimerHandle);
+
+	Super::EndPlay(EndPlayReason);
+}
+
 void ADTTimerPlatform::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// ÇÃ·§ÆûÀ» ¹âÀ¸¸é DisappearDelayÃÊ µÚ¿¡ »ç¶óÁü
+	// í”Œëž«í¼ì„ ë°Ÿìœ¼ë©´ DisappearDelayì´ˆ ë’¤ì— ì‚¬ë¼ì§
 	GetWorld()->GetTimerManager().SetTimer(DisappearTimerHandle, this, &ADTTimerPlatform::DisappearPlatform, DisappearDelay, false);
 }
 
@@ -47,7 +55,7 @@ void ADTTimerPlatform::DisappearPlatform()
 {
 	SetPlatformActive(false);
 
-	// »ç¶óÁø µÚ RespawnDelayÃÊ ÈÄ¿¡ ³ªÅ¸³²
+	// ì‚¬ë¼ì§„ ë’¤ RespawnDelayì´ˆ í›„ì— ë‚˜íƒ€ë‚¨
 	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &ADTTimerPlatform::RespawnPlatform, RespawnDelay, false);
 }
 

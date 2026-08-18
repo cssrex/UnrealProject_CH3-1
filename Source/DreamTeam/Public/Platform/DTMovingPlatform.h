@@ -14,10 +14,10 @@ class DREAMTEAM_API ADTMovingPlatform : public AActor
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	FVector MoveSpeed;
+	float MoveSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	float MaxRange;
+	FVector Destination;
 
 public:	
 	ADTMovingPlatform();
@@ -35,5 +35,8 @@ protected:
 
 private:
 	FVector StartLocation;
+	FVector EndLocation;
 
+	float Alpha = 0.0f;
+	float Direction = 1.0f;
 };
