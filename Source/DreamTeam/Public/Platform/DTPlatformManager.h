@@ -12,6 +12,13 @@ class DREAMTEAM_API ADTPlatformManager : public AActor
 {
 	GENERATED_BODY()
 	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	TSubclassOf<AActor> PlatformClasses;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	int32 SpawnCount;
+
 public:	
 	ADTPlatformManager();
 
@@ -24,12 +31,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item|Components")
 	TObjectPtr<UBoxComponent> SpawnArea;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	TSubclassOf<AActor> PlatformClasses;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	int32 SpawnCount;
 
 private:
 	void SpawnPlatform();

@@ -28,10 +28,12 @@ void ADTMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	// 시작점을 중심으로 왕복해서 움직임
 	if (!MoveSpeed.IsNearlyZero())
 	{
 		AddActorWorldOffset(MoveSpeed * DeltaTime);
 
+		// 시작 지점으로부터 MaxRange보다 멀어지면 속도 뒤집기
 		if (FVector::Dist(StartLocation, GetActorLocation()) > MaxRange)
 		{
 			MoveSpeed *= -1;

@@ -33,6 +33,7 @@ void ADTTimerPlatform::BeginPlay()
 
 void ADTTimerPlatform::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// 플랫폼을 밟으면 DisappearDelay초 뒤에 사라짐
 	GetWorld()->GetTimerManager().SetTimer(DisappearTimerHandle, this, &ADTTimerPlatform::DisappearPlatform, DisappearDelay, false);
 }
 
@@ -46,6 +47,7 @@ void ADTTimerPlatform::DisappearPlatform()
 {
 	SetPlatformActive(false);
 
+	// 사라진 뒤 RespawnDelay초 후에 나타남
 	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &ADTTimerPlatform::RespawnPlatform, RespawnDelay, false);
 }
 

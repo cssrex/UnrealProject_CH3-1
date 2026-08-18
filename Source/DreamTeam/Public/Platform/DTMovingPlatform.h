@@ -12,9 +12,12 @@ class DREAMTEAM_API ADTMovingPlatform : public AActor
 {
 	GENERATED_BODY()
 
-public:
-	void SetMoveSpeed(const FVector& NewSpeed) { MoveSpeed = NewSpeed; }
-	void SetMaxRange(float NewRange) { MaxRange = NewRange; }
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	FVector MoveSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	float MaxRange;
 
 public:	
 	ADTMovingPlatform();
@@ -29,12 +32,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item|Components")
 	TObjectPtr<UStaticMeshComponent> MeshComp;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	FVector MoveSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	float MaxRange;
 
 private:
 	FVector StartLocation;

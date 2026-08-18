@@ -13,6 +13,13 @@ class DREAMTEAM_API ADTTimerPlatform : public AActor
 {
 	GENERATED_BODY()
 	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Value");
+	float DisappearDelay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Value");
+	float RespawnDelay;
+
 public:	
 	ADTTimerPlatform();
 
@@ -28,12 +35,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item|Components")
 	TObjectPtr<UBoxComponent> BoxCollision;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Value");
-	float DisappearDelay;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Value");
-	float RespawnDelay;
 
 private:
 	UFUNCTION()

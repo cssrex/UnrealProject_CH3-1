@@ -12,8 +12,9 @@ class DREAMTEAM_API ADTRotationPlatform : public AActor
 {
 	GENERATED_BODY()
 	
-public:
-	void SetRotationSpeed(const FRotator& NewSpeed) { RotationSpeed = NewSpeed; }
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
+	FRotator RotationSpeed;
 
 public:	
 	ADTRotationPlatform();
@@ -29,6 +30,5 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item|Components")
 	TObjectPtr<UStaticMeshComponent> MeshComp;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Value")
-	FRotator RotationSpeed;
+
 };
